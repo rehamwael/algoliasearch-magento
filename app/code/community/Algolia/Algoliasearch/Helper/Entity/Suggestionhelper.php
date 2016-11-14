@@ -20,9 +20,7 @@ class Algolia_Algoliasearch_Helper_Entity_Suggestionhelper extends Algolia_Algol
             'removeWordsIfNoResults' => 'lastWords',
         );
 
-        $transport = new Varien_Object($indexSettings);
-        Mage::dispatchEvent('algolia_suggestions_index_before_set_settings', array('store_id' => $storeId, 'index_settings' => $transport));
-        $indexSettings = $transport->getData();
+        Mage::dispatchEvent('algolia_suggestions_index_before_set_settings', array('store_id' => $storeId, 'index_settings' => $indexSettings));
 
         return $indexSettings;
     }
@@ -37,9 +35,7 @@ class Algolia_Algoliasearch_Helper_Entity_Suggestionhelper extends Algolia_Algol
             'updated_at'        => (int) strtotime($suggestion->getData('updated_at')),
         );
 
-        $transport = new Varien_Object($suggestionObject);
-        Mage::dispatchEvent('algolia_after_create_suggestion_object', array('suggestion' => $transport));
-        $suggestionObject = $transport->getData();
+        Mage::dispatchEvent('algolia_after_create_suggestion_object', array('suggestion' => $suggestionObject));
 
         return $suggestionObject;
     }
@@ -102,9 +98,7 @@ class Algolia_Algoliasearch_Helper_Entity_Suggestionhelper extends Algolia_Algol
 
         $collection->getSelect()->where('num_results >= '.$this->config->getMinNumberOfResults().' AND popularity >= '.$this->config->getMinPopularity().' AND query_text != "__empty__"');
 
-        $transport = new Varien_Object($collection);
-        Mage::dispatchEvent('algolia_after_suggestions_collection_build', array('store' => $storeId, 'collection' => $transport));
-        $collection = $transport->getData();
+        Mage::dispatchEvent('algolia_after_suggestions_collection_build', array('store' => $storeId, 'collection' => $collection));
 
         return $collection;
     }

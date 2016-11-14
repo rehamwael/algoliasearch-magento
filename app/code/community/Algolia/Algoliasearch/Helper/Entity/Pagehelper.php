@@ -14,9 +14,7 @@ class Algolia_Algoliasearch_Helper_Entity_Pagehelper extends Algolia_Algoliasear
             'attributesToSnippet' => array('content:7'),
         );
 
-        $transport = new Varien_Object($indexSettings);
-        Mage::dispatchEvent('algolia_pages_index_before_set_settings', array('store_id' => $storeId, 'index_settings' => $transport));
-        $indexSettings = $transport->getData();
+        Mage::dispatchEvent('algolia_pages_index_before_set_settings', array('store_id' => $storeId, 'index_settings' => $indexSettings));
 
         return $indexSettings;
     }
@@ -29,9 +27,7 @@ class Algolia_Algoliasearch_Helper_Entity_Pagehelper extends Algolia_Algoliasear
         /** @var Mage_Cms_Model_Resource_Page_Collection $pages */
         $pages = $cmsPage->getCollection()->addStoreFilter($storeId)->addFieldToFilter('is_active', 1);
 
-        $transport = new Varien_Object($pages);
-        Mage::dispatchEvent('algolia_after_pages_collection_build', array('store' => $storeId, 'collection' => $transport));
-        $pages = $transport->getData();
+        Mage::dispatchEvent('algolia_after_pages_collection_build', array('store' => $storeId, 'collection' => $pages));
 
         $ids = $pages->toOptionArray();
 
@@ -78,9 +74,7 @@ class Algolia_Algoliasearch_Helper_Entity_Pagehelper extends Algolia_Algoliasear
             $pageObject['url'] = $cmsPageHelper->getPageUrl($page->getId());
             $pageObject['content'] = $this->strip($content);
 
-            $transport = new Varien_Object($pageObject);
-            Mage::dispatchEvent('algolia_after_create_page_object', array('page' => $transport));
-            $pageObject = $transport->getData();
+            Mage::dispatchEvent('algolia_after_create_page_object', array('page' => $pageObject));
 
             $pages[] = $pageObject;
         }

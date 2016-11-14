@@ -45,10 +45,8 @@ class Algolia_Algoliasearch_Helper_Entity_Categoryhelper extends Algolia_Algolia
         );
 
         // Additional index settings from event observer
-        $transport = new Varien_Object($indexSettings);
-        Mage::dispatchEvent('algolia_index_settings_prepare', array('store_id' => $storeId, 'index_settings' => $transport));
-        Mage::dispatchEvent('algolia_categories_index_before_set_settings', array('store_id' => $storeId, 'index_settings' => $transport));
-        $indexSettings = $transport->getData();
+        Mage::dispatchEvent('algolia_index_settings_prepare', array('store_id' => $storeId, 'index_settings' => $indexSettings));
+        Mage::dispatchEvent('algolia_categories_index_before_set_settings', array('store_id' => $storeId, 'index_settings' => $indexSettings));
 
         $this->algolia_helper->mergeSettings($this->getIndexName($storeId), $indexSettings);
 
@@ -86,9 +84,7 @@ class Algolia_Algoliasearch_Helper_Entity_Categoryhelper extends Algolia_Algolia
             $categories->addFieldToFilter('entity_id', array('in' => $categoryIds));
         }
 
-        $transport = new Varien_Object($categories);
-        Mage::dispatchEvent('algolia_after_categories_collection_build', array('store' => $storeId, 'collection' => $transport));
-        $categories = $transport->getData();
+        Mage::dispatchEvent('algolia_after_categories_collection_build', array('store' => $storeId, 'collection' => $categories));
 
         return $categories;
     }
@@ -137,9 +133,8 @@ class Algolia_Algoliasearch_Helper_Entity_Categoryhelper extends Algolia_Algolia
 
         $category->setProductCount($productCollection->getSize());
 
-        $transport = new Varien_Object();
-        Mage::dispatchEvent('algolia_category_index_before', array('category' => $category, 'custom_data' => $transport));
-        $customData = $transport->getData();
+        $customData = array();
+        Mage::dispatchEvent('algolia_category_index_before', array('category' => $category, 'custom_data' => $customData));
 
         $category->getUrlInstance()->setStore($storeId);
         $path = '';
@@ -198,9 +193,7 @@ class Algolia_Algoliasearch_Helper_Entity_Categoryhelper extends Algolia_Algolia
             $data0 = $this->try_cast($data0);
         }
 
-        $transport = new Varien_Object($data);
-        Mage::dispatchEvent('algolia_after_create_category_object', array('category' => $transport));
-        $data = $transport->getData();
+        Mage::dispatchEvent('algolia_after_create_category_object', array('category' => $category));
 
         return $data;
     }
